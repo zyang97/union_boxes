@@ -69,7 +69,7 @@ class QuatPredModule(nn.Module):
 
 
 def normalize(x):
-  x  = x/ (1E-12 + torch.norm(x, dim=1, p=2).expand(x.size()))
+  x  = x/ (1E-12 + torch.norm(x, dim=1, p=2, keepdim=True).expand(x.size()))
   return x
 
 class TransPredModule(nn.Module):

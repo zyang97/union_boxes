@@ -29,7 +29,7 @@ params.symLossWt = 1
 params.gridSize = 32
 params.gridBound = 0.5
 params.useBn = 1
-params.nParts = 20
+params.nParts = 6
 params.disp = 0
 params.imsave = 0
 params.shapeLrDecay = 0.01
@@ -38,25 +38,27 @@ params.gpu = 1
 params.visIter = 100
 # params.modelIter = 100000  # data loader reloads models after these many iterations
 params.modelIter = 2  # data loader reloads models after these many iterations
-params.synset = 'chairs'  # chair:3001627, aero:2691156, table:4379243
+params.synset = '03001627'  # chair:03001627, aero:2691156, table:4379243 # buildings: `buildings_norm`
 # params.synset = '03001628'  # chair:3001627, aero:2691156, table:4379243
-params.name = 'chairChamferSurf_null_small_init_prob0pt0001_shape0pt01'
+params.name = 'chairs_100'
 params.bMomentum = 0.9  # baseline momentum for reinforce
 params.entropyWt = 0
 params.nullReward = 0.000
 params.nSamplePoints = 1000
 params.nSamplesChamfer = 150  # number of points we'll sample per part
 params.useCubOnly = 0
-params.usePretrain = 0
+params.usePretrain = False
 params.normFactor = 'Surf'
-params.pretrainNet = 'chairChamferSurf_null_small_init_prob0pt0001_shape0pt01'
+params.pretrainNet = 'chairs'
 params.pretrainLrShape = 0.01
 params.pretrainLrProb = 0.0001
-params.pretrainIter = 20000
-params.modelsDataDir = os.path.join('../cachedir/shapenet/chamferData/', params.synset)
-params.visDir = os.path.join('../cachedir/visualization/', params.name)
-params.visMeshesDir = os.path.join('../cachedir/visualization/meshes/', params.name)
-params.snapshotDir = os.path.join('../cachedir/snapshots/', params.name)
+params.pretrainIter = 19999
+# params.modelsDataDir = os.path.join('D:\\projects\\experiment\\volumetricPrimitivesPytorch\\cachedir', params.synset)
+params.modelsDataDir = os.path.join('D:\\projects\\volumetricPrimitivesPytorch\\cachedir\\shapenet\\chamferData', params.synset)
+
+params.visDir = os.path.join('D:\\projects\\experiment\\volumetricPrimitivesPytorch\\cachedir\\visualization', params.name)
+params.visMeshesDir = os.path.join('D:\\projects\\experiment\\volumetricPrimitivesPytorch\\cachedir\\visualization\\meshes', params.name)
+params.snapshotDir = os.path.join('D:\\projects\\experiment\\volumetricPrimitivesPytorch\\cachedir\\snapshots', params.name)
 
 dataloader = SimpleCadData(params)
 params.nz = 3
@@ -81,7 +83,7 @@ for p in range(len(params.primTypes)):
 cuboid_sampler = CuboidSurface(params.nSamplesChamfer, normFactor='Surf')
 criterion  = nn.L1Loss()
 def train(dataloader, netPred, optimizer, iter):
-  inputVol, tsdfGt, sampledPoints, loaded_cps = dataloader.forward()
+  inputVol, tsdfGt, sampledPoints, loaded_cps, fileNames = dataloader.forward()
   # pdb.set_trace()
   inputVol = Variable(inputVol.clone().cuda())
   tsdfGt = Variable(tsdfGt.cuda())
@@ -101,11 +103,11 @@ def train(dataloader, netPred, optimizer, iter):
     # pdb.set_trace()
     # plot3(sampledPoints[0].data.cpu())
     for i in range(4):
-      savePredParts(predParts[i], '../train_preds/train_{}.obj'.format(i))
+      savePredParts(predParts[i], 'train_preds/train_{}_{}.obj'.format(i, fileNames[i]))
 
   loss.backward()
   optimizer.step()
-  return loss.data[0], coverage.data[0], consistency.data[0]
+  return loss.item(), coverage.item(), consistency.item()
 
 
 import torch.nn as nn
@@ -145,6 +147,18 @@ class Network(nn.Module):
 netPred = Network(params)
 netPred.cuda()
 
+if params.usePretrain:
+  updateShapeWtFunc = netUtils.scaleWeightsFunc(params.pretrainLrShape / params.shapeLrDecay, 'shapePred')
+  updateProbWtFunc = netUtils.scaleWeightsFunc(params.pretrainLrProb / params.probLrDecay, 'probPred')
+  updateBiasWtFunc = netUtils.scaleBiasWeights(params.probLrDecay, 'probPred')
+  load_path = os.path.join('D:\\projects\\volumetricPrimitivesPytorch\\cachedir\\snapshots', params.pretrainNet, 'iter{}.pkl'.format(params.pretrainIter))
+  netPretrain = torch.load(load_path)
+  netPred.load_state_dict(netPretrain)
+  print('Loading pretrained model from {}'.format(load_path))
+  netPred.primitivesTable.apply(updateShapeWtFunc)
+  netPred.primitivesTable.apply(updateProbWtFunc)
+  # netPred.primitivesTable.apply(updateBiasWtFunc)
+
 optimizer = torch.optim.Adam(netPred.parameters(), lr=params.learningRate)
 
 nSamplePointsTrain = params.nSamplePoints
@@ -170,12 +184,13 @@ for iter  in range(params.numTrainIter):
   if iter % params.visIter ==0:
     reshapeSize = torch.Size([params.batchSizeVis, 1, params.gridSize, params.gridSize, params.gridSize])
 
-    sample, tsdfGt, sampledPoints = dataloader.forwardTest()
+    sample, tsdfGt, sampledPoints, fileNames = dataloader.forwardTest()
 
 
     sampledPoints = sampledPoints[0:params.batchSizeVis].cuda()
     sample = sample[0:params.batchSizeVis].cuda()
     tsdfGt = tsdfGt[0:params.batchSizeVis].view(reshapeSize)
+    fileNames = fileNames[0:params.batchSizeVis]
 
     tsdfGtSq = tsdfSqModTest(tsdfGt)
     netPred.eval()
@@ -191,15 +206,15 @@ for iter  in range(params.numTrainIter):
       predParams = shapePredParams
       for b in range(0, tsdfGt.size(0)):
 
-        visTriSurf = mc.march(tsdfGt[b][0].cpu().numpy())
-        mc.writeObj('{}/iter{}_inst{}_gt.obj'.format(params.visMeshesDir ,iter, b), visTriSurf)
+        # visTriSurf = mc.march(tsdfGt[b][0].cpu().numpy())
+        # mc.writeObj('{}/iter{}_inst{}_gt.obj'.format(params.visMeshesDir ,iter, b), visTriSurf)
 
 
         pred_b = []
         for px in range(params.nParts):
           pred_b.append(predParams[b,px,:].clone().data.cpu())
 
-        mUtils.saveParts(pred_b, '{}/iter{}_inst{}_pred.obj'.format(params.visMeshesDir, iter, b))
+        mUtils.saveParts(pred_b, '{}/iter{}_inst{}_pred_{}.obj'.format(params.visMeshesDir, iter, b, fileNames[b]))
 
     if (iter % 1000) == 0 :
       torch.save(netPred.state_dict() ,"{}/iter{}.pkl".format(params.snapshotDir,iter))

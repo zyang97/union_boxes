@@ -9,6 +9,13 @@ from torch.autograd import Variable
 
 ## Dataloader for Volumetric Primitives
 
+def load_file_name(source):
+  files = os.listdir(source)
+  fileNames = []
+  for file in files:
+    fileNames.append(file.split('.')[0])
+  return fileNames
+
 class SimpleCadData(object):
   def __init__(self, params):
     self.gridSize = params.gridSize
@@ -21,10 +28,21 @@ class SimpleCadData(object):
 
     self.iter = 0
     self.startModelIndex = 0
-    self.modelNames = []
 
-    for filename in glob.iglob(self.modelsDir + '/*.mat'):
-      self.modelNames.append(filename)
+
+    self.modelNames = []
+    self.fileNames = []
+
+    # for filename in glob.iglob(self.modelsDir + '/*.mat'):
+    #   self.modelNames.append(filename)
+    #   self.fileNames.append(os.path.splitext(os.path.basename(filename))[0])
+    # self.fileNames = np.array(self.fileNames)
+
+    self.fileNames = load_file_name('D:\\projects\\UnionBox2\\test2\\imgs')
+    for fileName in self.fileNames:
+      modelName = os.path.join(self.modelsDir, fileName + '.mat')
+      self.modelNames.append(modelName)
+    self.fileNames = np.array(self.fileNames)
 
 
     ## Limit to 200 chairs
@@ -104,6 +122,7 @@ class SimpleCadData(object):
     self.loadedCPs = self.all_closetPoints[ids]
     self.loadedSurfaceSamples = self.all_surfaceSamples[ids]
     self.loadedShapes = self.loadedVoxels
+    self.loadedFileNames = self.fileNames[ids.cpu()]
 
   # def forward(self):
   #   if (self.iter % self.modelIter == 0):
@@ -132,7 +151,7 @@ class SimpleCadData(object):
       sample_ids = torch.LongTensor(np.random.randint(0, nPointsTot, self.nSamplePoints)).cuda()
       outSamplePoints.append(self.loadedSurfaceSamples[b][sample_ids])
     outSamplePoints = torch.stack(outSamplePoints)
-    output = [self.loadedShapes, self.outSampleTsfds, outSamplePoints, self.loadedCPs]
+    output = [self.loadedShapes, self.outSampleTsfds, outSamplePoints, self.loadedCPs, self.loadedFileNames]
     return output
 
   def forwardTest(self):
@@ -141,7 +160,7 @@ class SimpleCadData(object):
     self.iter  = self.iter + 1
     outTsfds = self.loadedTsdfs.view(self.batchSize, self.gridSize**3)
     outPoints = self.gridPoints.clone()
-    return self.loadedShapes, outTsfds, outPoints
+    return self.loadedShapes, outTsfds, outPoints, self.loadedFileNames
 
   def reloadShapesSequential(self):
     ids = []

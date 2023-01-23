@@ -14,7 +14,7 @@ def cuboid_tsdf(sample_points, shape):
   nP = sample_points.size(1)
   shape_rep = shape.repeat(1, nP, 1)
   tsdf = torch.abs(sample_points) - shape_rep
-  tsdfSq = F.relu(tsdf).pow(2).sum(dim=2)
+  tsdfSq = F.relu(tsdf).pow(2).sum(dim=2, keepdim=True)
   return tsdfSq  ## Batch_size x nP x 1
 
 
@@ -78,7 +78,7 @@ def transform_samples(samples, predParts):
 
 def normalize_weights(imp_weights):
   # B x nP x 1
-  totWeights = (torch.sum(imp_weights, dim=1) + 1E-6).repeat(1, imp_weights.size(1), 1)
+  totWeights = (torch.sum(imp_weights, dim=1, keepdim=True) + 1E-6).repeat(1, imp_weights.size(1), 1)
   norm_weights = imp_weights / totWeights
   return norm_weights
 
@@ -87,7 +87,7 @@ def chamfer_loss(predParts, dataloader, cuboid_sampler):
   sampled_points, imp_weights = partComposition(predParts, cuboid_sampler)
   norm_weights = normalize_weights(imp_weights)
   tsdfLosses = dataloader.chamfer_forward(sampled_points)
-  weighted_loss = tsdfLosses * norm_weights  # B x nP x 1
+  weighted_loss = tsdfLosses.unsqueeze(dim=2) * norm_weights  # B x nP x 1
   return torch.sum(weighted_loss, 1).mean()
 
 
