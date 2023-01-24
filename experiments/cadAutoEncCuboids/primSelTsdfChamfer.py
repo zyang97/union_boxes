@@ -83,12 +83,17 @@ for p in range(len(params.primTypes)):
 cuboid_sampler = CuboidSurface(params.nSamplesChamfer, normFactor='Surf')
 criterion  = nn.L1Loss()
 def train(dataloader, netPred, optimizer, iter):
-  inputVol, tsdfGt, sampledPoints, loaded_cps, fileNames = dataloader.forward()
-  # pdb.set_trace()
-  inputVol = Variable(inputVol.clone().cuda())
+  inputVol, tsdfGt, sampledPoints, loaded_cps, fileNames, inputPoints = dataloader.forward()
+  # inputVol = Variable(inputVol.clone().cuda())
+  # tsdfGt = Variable(tsdfGt.cuda())
+  # sampledPoints = Variable(sampledPoints.cuda()) ## B x np x 3
+  # predParts = netPred.forward(inputVol) ## B x nPars*10
+  # predParts = predParts.view(predParts.size(0), -1, 10)
+
+  inputPoints = Variable(inputPoints.clone().cuda())
   tsdfGt = Variable(tsdfGt.cuda())
-  sampledPoints = Variable(sampledPoints.cuda()) ## B x np x 3
-  predParts = netPred.forward(inputVol) ## B x nPars*10
+  sampledPoints = Variable(sampledPoints.cuda())  ## B x np x 3
+  predParts = netPred.forward(inputPoints)  ## B x nPars*10
   predParts = predParts.view(predParts.size(0), -1, 10)
 
   optimizer.zero_grad()
@@ -111,6 +116,40 @@ def train(dataloader, netPred, optimizer, iter):
 
 
 import torch.nn as nn
+from third_party.Pointnet_Pointnet2_pytorch.models.pointnet_cls import get_model
+class Network2(nn.Module):
+  def __init__(self, params):
+    super(Network2, self).__init__()
+    self.backbone = get_model(normal_channel=False)
+    outChannels = self.outChannels = 256
+    layers = []
+    for i in range(2):
+      layers.append(nn.Conv3d(outChannels, outChannels, kernel_size=1))
+      layers.append(nn.BatchNorm3d(outChannels))
+      layers.append(nn.LeakyReLU(0.2, True))
+
+    self.fc_layers = nn.Sequential(*layers)
+    self.fc_layers.apply(netUtils.weightsInit)
+    biasTerms = lambda x: 0
+
+    biasTerms.quat = torch.Tensor([1, 0, 0, 0])
+    biasTerms.shape = torch.Tensor(params.nz).fill_(-3) / params.shapeLrDecay
+    biasTerms.prob = torch.Tensor(len(params.primTypes)).fill_(0)
+    for p in range(len(params.primTypes)):
+      if (params.primTypes[p] == 'Cu'):
+        biasTerms.prob[p] = 2.5 / params.probLrDecay
+
+    self.primitivesTable = primitives.Primitives(params, outChannels, biasTerms)
+
+  def forward(self, x):
+    # input: x (bs, 1, 32, 32,32)
+    x = x.transpose(1, 2)
+    encoding, trans_feat  = self.backbone(x) # encoding (bs, 16, 1, 1, 1)
+    for i in range(3):
+      encoding = encoding.unsqueeze(-1)
+    features = self.fc_layers(encoding) # features (bs, 16, 1, 1, 1)
+    primitives = self.primitivesTable(features) # primitives (bs, nParts * 10)
+    return primitives
 
 class Network(nn.Module):
   def __init__(self, params):
@@ -138,13 +177,13 @@ class Network(nn.Module):
     self.primitivesTable = primitives.Primitives(params, outChannels, biasTerms)
 
   def forward(self, x):
-
-    encoding  = self.ve(x)
-    features = self.fc_layers(encoding)
-    primitives = self.primitivesTable(features)
+    # input: x (bs, 1, 32, 32,32)
+    encoding  = self.ve(x) # encoding (bs, 16, 1, 1, 1)
+    features = self.fc_layers(encoding) # features (bs, 16, 1, 1, 1)
+    primitives = self.primitivesTable(features) # primitives (bs, nParts * 10)
     return primitives
 
-netPred = Network(params)
+netPred = Network2(params)
 netPred.cuda()
 
 if params.usePretrain:
@@ -184,17 +223,28 @@ for iter  in range(params.numTrainIter):
   if iter % params.visIter ==0:
     reshapeSize = torch.Size([params.batchSizeVis, 1, params.gridSize, params.gridSize, params.gridSize])
 
-    sample, tsdfGt, sampledPoints, fileNames = dataloader.forwardTest()
+    sample, tsdfGt, sampledPoints, fileNames, inputPoints = dataloader.forwardTest()
 
+
+    # sampledPoints = sampledPoints[0:params.batchSizeVis].cuda()
+    # sample = sample[0:params.batchSizeVis].cuda()
+    # tsdfGt = tsdfGt[0:params.batchSizeVis].view(reshapeSize)
+    # fileNames = fileNames[0:params.batchSizeVis]
+    #
+    # tsdfGtSq = tsdfSqModTest(tsdfGt)
+    # netPred.eval()
+    # shapePredParams = netPred.forward(Variable(sample))
+    # shapePredParams = shapePredParams.view(params.batchSizeVis, params.nParts, 10)
+    # netPred.train()
 
     sampledPoints = sampledPoints[0:params.batchSizeVis].cuda()
-    sample = sample[0:params.batchSizeVis].cuda()
+    inputPoints = inputPoints[0:params.batchSizeVis].cuda()
     tsdfGt = tsdfGt[0:params.batchSizeVis].view(reshapeSize)
     fileNames = fileNames[0:params.batchSizeVis]
 
     tsdfGtSq = tsdfSqModTest(tsdfGt)
     netPred.eval()
-    shapePredParams = netPred.forward(Variable(sample))
+    shapePredParams = netPred.forward(Variable(inputPoints))
     shapePredParams = shapePredParams.view(params.batchSizeVis, params.nParts, 10)
     netPred.train()
 

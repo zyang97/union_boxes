@@ -9,6 +9,20 @@ from torch.autograd import Variable
 
 ## Dataloader for Volumetric Primitives
 
+class OBJ:
+  def __init__(self, vertices, lines_index):
+
+    self.vertices = vertices
+    self.lines = [[line[0], line[1]] for line in lines_index]
+
+  def save_obj(self, output_dir):
+    with open(output_dir, 'w') as f:
+      f.write('# OBJ file\n')
+      for v in self.vertices:
+        f.write('v {0} {1} {2}\n'.format(v[0], v[1], v[2]))
+      for l in self.lines:
+        f.write('l {0} {1}\n'.format(int(l[0]), int(l[1])))
+
 def load_file_name(source):
   files = os.listdir(source)
   fileNames = []
@@ -44,7 +58,6 @@ class SimpleCadData(object):
       self.modelNames.append(modelName)
     self.fileNames = np.array(self.fileNames)
 
-
     ## Limit to 200 chairs
     # self.modelNames = self.modelNames[0:200]
 
@@ -62,9 +75,16 @@ class SimpleCadData(object):
     self.gridPoints = meshGrid.view(params.batchSize, params.gridSize**3, 3).clone()
     self.shape_mats = dict()
     self.load_all_mats()
+
     self.load_torch_tensors()
     self.outSampleTsfds = torch.Tensor(self.batchSize, self.nSamplePoints).fill_(0).cuda()
     self.global_index = 0
+    # for i in range(self.all_surfaceSamples.size(0)):
+    #   obj = OBJ(self.all_surfaceSamples[i], [])
+    #   path = "D:\\projects\\experiment\\volumetricPrimitivesPytorch\\cachedir\\chairs_point_clouds"
+    #   obj.save_obj(os.path.join(path, self.fileNames[i] + ".obj"))
+    #
+    # print('load data done.')
 
   def load_all_mats(self):
     for ix in range(len(self.modelNames)):
@@ -151,7 +171,7 @@ class SimpleCadData(object):
       sample_ids = torch.LongTensor(np.random.randint(0, nPointsTot, self.nSamplePoints)).cuda()
       outSamplePoints.append(self.loadedSurfaceSamples[b][sample_ids])
     outSamplePoints = torch.stack(outSamplePoints)
-    output = [self.loadedShapes, self.outSampleTsfds, outSamplePoints, self.loadedCPs, self.loadedFileNames]
+    output = [self.loadedShapes, self.outSampleTsfds, outSamplePoints, self.loadedCPs, self.loadedFileNames, self.loadedSurfaceSamples]
     return output
 
   def forwardTest(self):
@@ -160,7 +180,7 @@ class SimpleCadData(object):
     self.iter  = self.iter + 1
     outTsfds = self.loadedTsdfs.view(self.batchSize, self.gridSize**3)
     outPoints = self.gridPoints.clone()
-    return self.loadedShapes, outTsfds, outPoints, self.loadedFileNames
+    return self.loadedShapes, outTsfds, outPoints, self.loadedFileNames, self.loadedSurfaceSamples
 
   def reloadShapesSequential(self):
     ids = []
@@ -231,3 +251,9 @@ class SimpleCadData(object):
     inds = (points - gridMin) * self.gridSize / (2 * self.gridBound)
     inds = torch.round(torch.clamp(inds, min=0, max=self.gridSize-1)).long()
     return inds
+
+# if __name__ == '__main__':
+#   import open3d as o3d
+#   mesh_path = 'D:\\data\\chairs\\03001627\\1a6f615e8b1b5ae4dbbc9440457e303e\\model.obj'
+#   mesh = o3d.io.read_triangle_mesh(mesh_path)
+#   print(mesh)
