@@ -90,6 +90,12 @@ def chamfer_loss(predParts, dataloader, cuboid_sampler):
   weighted_loss = tsdfLosses.unsqueeze(dim=2) * norm_weights  # B x nP x 1
   return torch.sum(weighted_loss, 1).mean()
 
+def shape_loss(predParts):
+  shape = predParts[:, :, 0:3]  # B  x 1 x 3
+  torch.prod(shape, )
+  shape_loss = torch.mean(torch.sum(torch.prod(shape, dim=2), dim=1))
+  return shape_loss
+
 
 
 def test_tsdf_pred():

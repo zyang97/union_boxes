@@ -8,7 +8,7 @@ import modules.netUtils as netUtils
 import modules.primitives as primitives
 from torch.autograd import Variable
 from data.cadConfigsChamfer import SimpleCadData
-from modules.losses import tsdf_pred, chamfer_loss
+from modules.losses import tsdf_pred, chamfer_loss, shape_loss
 from modules.cuboid import  CuboidSurface
 import pdb
 from modules.plotUtils import  plot3, plot_parts, plot_cuboid
@@ -29,7 +29,7 @@ params.symLossWt = 1
 params.gridSize = 32
 params.gridBound = 0.5
 params.useBn = 1
-params.nParts = 6
+params.nParts = 2
 params.disp = 0
 params.imsave = 0
 params.shapeLrDecay = 0.01
@@ -40,7 +40,7 @@ params.visIter = 100
 params.modelIter = 2  # data loader reloads models after these many iterations
 params.synset = '03001627'  # chair:03001627, aero:2691156, table:4379243 # buildings: `buildings_norm`
 # params.synset = '03001628'  # chair:3001627, aero:2691156, table:4379243
-params.name = 'chairs_100'
+params.name = 'chairs_shape_loss'
 params.bMomentum = 0.9  # baseline momentum for reinforce
 params.entropyWt = 0
 params.nullReward = 0.000
@@ -49,12 +49,13 @@ params.nSamplesChamfer = 150  # number of points we'll sample per part
 params.useCubOnly = 0
 params.usePretrain = False
 params.normFactor = 'Surf'
-params.pretrainNet = 'chairs'
+params.pretrainNet = 'building_norm'
 params.pretrainLrShape = 0.01
 params.pretrainLrProb = 0.0001
 params.pretrainIter = 19999
 # params.modelsDataDir = os.path.join('D:\\projects\\experiment\\volumetricPrimitivesPytorch\\cachedir', params.synset)
 params.modelsDataDir = os.path.join('D:\\projects\\volumetricPrimitivesPytorch\\cachedir\\shapenet\\chamferData', params.synset)
+# params.modelsDataDir = os.path.join('D:\\projects\\volumetricPrimitivesPytorch\\cachedir', params.synset)
 
 params.visDir = os.path.join('D:\\projects\\experiment\\volumetricPrimitivesPytorch\\cachedir\\visualization', params.name)
 params.visMeshesDir = os.path.join('D:\\projects\\experiment\\volumetricPrimitivesPytorch\\cachedir\\visualization\\meshes', params.name)
@@ -102,6 +103,8 @@ def train(dataloader, netPred, optimizer, iter):
   coverage_b = tsdfPred.mean(dim=1)
   coverage = coverage_b.mean()
   consistency = chamfer_loss(predParts, dataloader, cuboid_sampler)
+  # consistency = torch.tensor([0.0]).cuda()
+  # shape_ = shape_loss(predParts)
   loss = coverage + params.chamferLossWt*consistency
 
   if iter % 200 == 0:
@@ -206,6 +209,7 @@ nSamplePointsTest = params.gridSize**3
 loss = 0
 coverage = 0
 consitency = 0
+shape = 0
 
 import torch.nn.functional as F
 
@@ -218,7 +222,7 @@ def tsdfSqModTest(x):
 print("Iter\tErr\tTSDF\tChamf")
 for iter  in range(params.numTrainIter):
   print("{:10.7f}\t{:10.7f}\t{:10.7f}\t{:10.7f}".format(iter, loss, coverage, consitency))
-  loss, coverage, consitency = train(dataloader, netPred, optimizer, iter)
+  loss, coverage, consitency, shape = train(dataloader, netPred, optimizer, iter)
 
   if iter % params.visIter ==0:
     reshapeSize = torch.Size([params.batchSizeVis, 1, params.gridSize, params.gridSize, params.gridSize])

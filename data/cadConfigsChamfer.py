@@ -53,6 +53,7 @@ class SimpleCadData(object):
     # self.fileNames = np.array(self.fileNames)
 
     self.fileNames = load_file_name('D:\\projects\\UnionBox2\\test2\\imgs')
+    # self.fileNames = load_file_name('D:\\projects\\volumetricPrimitivesPytorch\\cachedir\\buildings_norm')
     for fileName in self.fileNames:
       modelName = os.path.join(self.modelsDir, fileName + '.mat')
       self.modelNames.append(modelName)
