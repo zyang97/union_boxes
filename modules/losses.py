@@ -6,6 +6,7 @@ from modules.quatUtils import quat_conjugate
 from torch.nn import functional as F
 import pdb
 import torch
+from third_party.chamfer_distance.chamfer_distance import ChamferDistance
 
 
 def cuboid_tsdf(sample_points, shape):
@@ -95,6 +96,34 @@ def shape_loss(predParts):
   torch.prod(shape, )
   shape_loss = torch.mean(torch.sum(torch.prod(shape, dim=2), dim=1))
   return shape_loss
+
+def chamfer_loss_img(predParts, cuboid_sampler, batch_gt):
+  sampled_points, imp_weights = partComposition(predParts, cuboid_sampler)
+  norm_weights = normalize_weights(imp_weights)
+  chd = ChamferDistance()
+  dist1, dist2, idx1, idx2 = chd(batch_gt, sampled_points)
+  consistency = (torch.mean(dist1)) + (torch.mean(dist2))
+  return consistency
+
+def get_loss(predParts, cuboid_sampler, batch_gt, chamferLossWt):
+  tsdfPred = tsdf_pred(batch_gt, predParts)
+  coverage_b = tsdfPred.mean(dim=1)
+  coverage = coverage_b.mean()
+
+  consistency = chamfer_loss_img(predParts, cuboid_sampler, batch_gt)
+
+  loss = coverage + chamferLossWt * consistency
+
+  return loss, coverage, consistency
+
+def get_aux_loss(inter_output, batch_gt):
+  chd = ChamferDistance()
+  dist1, dist2, idx1, idx2 = chd(batch_gt, inter_output)
+  loss = (torch.mean(dist1)) + (torch.mean(dist2))
+  loss /= inter_output.size(0)
+  return loss
+
+  # return torch.mean(torch.var(feats, dim=1))
 
 
 
