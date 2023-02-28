@@ -11,15 +11,18 @@ params = lambda x: 0
 params.data_dir = 'D:\\data\\images\\data'
 params.num_views = 10
 params.batch_size = 32
-params.category = 'car'
+params.category = 'lamp'
 params.num_points = 1024
 
 # trainer
 params.learning_rate = 0.0005
 params.num_train_iter = 500
 params.vis_iter = 10
-params.name = 'car'
+params.name = 'lamp'
 params.snapshotDir = os.path.join('D:\\projects\\experiment\\volumetricPrimitivesPytorch\\rec\\cachedir\\snapshots', params.name)
+
+if not os.path.exists(params.snapshotDir):
+    os.makedirs(params.snapshotDir)
 
 def train(netPred, optimizer, iter, batch_ip, batch_gt):
     _, out_pcl = netPred.forward(batch_ip)

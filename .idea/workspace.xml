@@ -2,32 +2,25 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fc949c0f-0bb6-4388-907a-d376cc5d031e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/config/chairs.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/evaluation/3d_iou.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/evaluation/visual_loss.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiments/cadAutoEncCuboids/test.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiments/cadAutoEncCuboids/train.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiView/model.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiView/test_multiview.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multiView/train_multiview.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rec/dataloader.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rec/net.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rec/save_gt.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rec/train_rec.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/generating_dataset.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/process_split.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/multiView/infer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/voxels/test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/voxels/train.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/volumetricPrimitivesPytorch.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/volumetricPrimitivesPytorch.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/cadAutoEncCuboids/primSelTsdfChamfer.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/cadAutoEncCuboids/primSelTsdfChamfer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/cadConfigsChamfer.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/cadConfigsChamfer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/visual_loss.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation/visual_loss.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/losses.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/losses.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiView/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiView/model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiView/test_multiview.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiView/test_multiview.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multiView/train_multiview.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiView/train_multiview.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rec/dataloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/rec/dataloader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rec/net.py" beforeDir="false" afterPath="$PROJECT_DIR$/rec/net.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rec/save_gt.py" beforeDir="false" afterPath="$PROJECT_DIR$/rec/save_gt.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rec/train_rec.py" beforeDir="false" afterPath="$PROJECT_DIR$/rec/train_rec.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/third_party/Pointnet_Pointnet2_pytorch/models/pointnet_cls.py" beforeDir="false" afterPath="$PROJECT_DIR$/third_party/Pointnet_Pointnet2_pytorch/models/pointnet_cls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/third_party/Pointnet_Pointnet2_pytorch/models/pointnet_part_seg.py" beforeDir="false" afterPath="$PROJECT_DIR$/third_party/Pointnet_Pointnet2_pytorch/models/pointnet_part_seg.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train_preds/train_0_6e1e73e14637a28da1c367d7a459a9b7.mtl" beforeDir="false" afterPath="$PROJECT_DIR$/train_preds/train_0_6e1e73e14637a28da1c367d7a459a9b7.mtl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train_preds/train_0_6e1e73e14637a28da1c367d7a459a9b7.obj" beforeDir="false" afterPath="$PROJECT_DIR$/train_preds/train_0_6e1e73e14637a28da1c367d7a459a9b7.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train_preds/train_1_6cb6373befd7e1a7aa918b099faddaba.mtl" beforeDir="false" afterPath="$PROJECT_DIR$/train_preds/train_1_6cb6373befd7e1a7aa918b099faddaba.mtl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train_preds/train_1_6cb6373befd7e1a7aa918b099faddaba.obj" beforeDir="false" afterPath="$PROJECT_DIR$/train_preds/train_1_6cb6373befd7e1a7aa918b099faddaba.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train_preds/train_3_6bcba04c2e45150779368d1198f406e7.mtl" beforeDir="false" afterPath="$PROJECT_DIR$/train_preds/train_3_6bcba04c2e45150779368d1198f406e7.mtl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train_preds/train_3_6bcba04c2e45150779368d1198f406e7.obj" beforeDir="false" afterPath="$PROJECT_DIR$/train_preds/train_3_6bcba04c2e45150779368d1198f406e7.obj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,7 +60,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/voxels/test.py" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -77,8 +70,50 @@
       <recent name="D:\projects\experiment\volumetricPrimitivesPytorch\rec" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.train_multiview">
-    <configuration name="dataloader" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.test_voxel">
+    <configuration name="Unnamed" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="volumetricPrimitivesPytorch" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\ProgramData\Anaconda3\envs\UnionBox2\python.exe" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="generating_dataset" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="volumetricPrimitivesPytorch" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\ProgramData\Anaconda3\envs\UnionBox2\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/data" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data/generating_dataset.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="infer" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="volumetricPrimitivesPytorch" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -86,11 +121,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/rec" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/multiView" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/rec/dataloader.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/multiView/infer.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -162,19 +197,19 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="save_gt" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="volumetricPrimitivesPytorch" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/experiments/cadAutoEncCuboids" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="SDK_HOME" value="C:\ProgramData\Anaconda3\envs\UnionBox2\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/rec" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/experiments/cadAutoEncCuboids/test.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/rec/save_gt.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -183,16 +218,58 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="train_multiview" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="test_multiview" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="volumetricPrimitivesPytorch" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="C:\ProgramData\Anaconda3\envs\UnionBox2\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/multiView" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/multiView/test_multiview.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test_voxel" type="PythonConfigurationType" factoryName="Python">
+      <module name="volumetricPrimitivesPytorch" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\ProgramData\Anaconda3\envs\UnionBox2\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/voxels" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/voxels/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="train_multiview" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="volumetricPrimitivesPytorch" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\ProgramData\Anaconda3\envs\UnionBox2\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/multiView" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/multiView/train_multiview.py" />
@@ -225,22 +302,63 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="train_voxel" type="PythonConfigurationType" factoryName="Python">
+      <module name="volumetricPrimitivesPytorch" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\ProgramData\Anaconda3\envs\UnionBox2\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/voxels" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/voxels/train.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests in test_multiview.py" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="volumetricPrimitivesPytorch" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/multiView" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/multiView/test_multiview.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
     <list>
-      <item itemvalue="Python.primSelTsdfChamfer" />
       <item itemvalue="Python.pointnet_cls" />
-      <item itemvalue="Python.test" />
-      <item itemvalue="Python.dataloader" />
-      <item itemvalue="Python.model" />
+      <item itemvalue="Python.primSelTsdfChamfer" />
       <item itemvalue="Python.train_multiview" />
+      <item itemvalue="Python.save_gt" />
+      <item itemvalue="Python.test_multiview" />
+      <item itemvalue="Python.train_voxel" />
+      <item itemvalue="Python.test_voxel" />
+      <item itemvalue="Python.generating_dataset" />
+      <item itemvalue="Python.model" />
       <item itemvalue="Python.train_rec" />
+      <item itemvalue="Python.Unnamed" />
+      <item itemvalue="Python.infer" />
+      <item itemvalue="Python tests.Python tests in test_multiview.py" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.train_multiview" />
+        <item itemvalue="Python tests.Python tests in test_multiview.py" />
+        <item itemvalue="Python.infer" />
         <item itemvalue="Python.train_rec" />
         <item itemvalue="Python.model" />
-        <item itemvalue="Python.dataloader" />
-        <item itemvalue="Python.test" />
       </list>
     </recent_temporary>
   </component>
@@ -287,13 +405,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/rec/dataloader.py</url>
-          <line>154</line>
+          <line>161</line>
           <option name="timeStamp" value="112" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/multiView/model.py</url>
-          <line>110</line>
-          <option name="timeStamp" value="113" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -304,5 +417,10 @@
         </breakpoint>
       </default-breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="netPretrain" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

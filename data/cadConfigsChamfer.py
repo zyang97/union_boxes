@@ -36,6 +36,7 @@ class SimpleCadData(object):
     self.modelsDir = params.modelsDataDir
     self.modelIter = params.modelIter
     self.batchSize = params.batchSize
+    self.batchSizeVis = params.batchSizeVis
     self.modelSize = params.gridSize
     self.nSamplePoints = params.nSamplePoints
     self.gridBound = params.gridBound
@@ -45,19 +46,39 @@ class SimpleCadData(object):
 
 
     self.modelNames = []
+    self.valModelNames = []
     self.fileNames = []
-
+    self.valFileNames = []
     # for filename in glob.iglob(self.modelsDir + '/*.mat'):
     #   self.modelNames.append(filename)
     #   self.fileNames.append(os.path.splitext(os.path.basename(filename))[0])
     # self.fileNames = np.array(self.fileNames)
 
-    self.fileNames = load_file_name('D:\\projects\\UnionBox2\\test2\\imgs')
+    # self.fileNames = load_file_name('D:\\projects\\UnionBox2\\test2\\imgs')
     # self.fileNames = load_file_name('D:\\projects\\volumetricPrimitivesPytorch\\cachedir\\buildings_norm')
-    for fileName in self.fileNames:
-      modelName = os.path.join(self.modelsDir, fileName + '.mat')
+
+    print('Loading train filenames...')
+    with open(params.trainDatasetDir, 'r') as f:
+      for model in f.readlines():
+        self.fileNames.append(model.strip())
+    print('Loading val filenames...')
+    with open(params.valDatasetDir, 'r') as f:
+      for model in f.readlines():
+        self.valFileNames.append(model.strip())
+    print('Processing filenames...')
+    for filename in self.fileNames:
+      modelName = os.path.join(self.modelsDir, filename + '.mat')
       self.modelNames.append(modelName)
+
+    for filename in self.valFileNames:
+      modelName = os.path.join(self.modelsDir, filename + '.mat')
+      self.valModelNames.append(modelName)
+
+    # for fileName in self.fileNames:
+    #   modelName = os.path.join(self.modelsDir, fileName + '.mat')
+    #   self.modelNames.append(modelName)
     self.fileNames = np.array(self.fileNames)
+    self.valFileNames = np.array(self.valFileNames)
 
     ## Limit to 200 chairs
     # self.modelNames = self.modelNames[0:200]
@@ -75,9 +96,14 @@ class SimpleCadData(object):
     meshGrid = meshGridInit.repeat(params.batchSize, 1, 1, 1, 1)
     self.gridPoints = meshGrid.view(params.batchSize, params.gridSize**3, 3).clone()
     self.shape_mats = dict()
+    self.val_shape_mats = dict()
+    print('Loading mats...')
     self.load_all_mats()
 
+    print('Loading torch tensors...')
     self.load_torch_tensors()
+    self.load_val_torch_tensors()
+
     self.outSampleTsfds = torch.Tensor(self.batchSize, self.nSamplePoints).fill_(0).cuda()
     self.global_index = 0
     # for i in range(self.all_surfaceSamples.size(0)):
@@ -91,6 +117,10 @@ class SimpleCadData(object):
     for ix in range(len(self.modelNames)):
       model_name = self.modelNames[ix]
       self.shape_mats[model_name] = loadmat(model_name)
+    for ix in range(len(self.valFileNames)):
+      model_name = self.valModelNames[ix]
+      self.val_shape_mats[model_name] = loadmat(model_name)
+
 
   def load_torch_tensors(self):
     self.all_tsdfs = []
@@ -109,25 +139,22 @@ class SimpleCadData(object):
     self.all_closetPoints = torch.stack(self.all_closetPoints).unsqueeze(1).cuda()
     self.all_surfaceSamples = torch.stack(self.all_surfaceSamples).cuda()
 
+  def load_val_torch_tensors(self):
+    self.all_val_tsdfs = []
+    self.all_val_volumes = []
+    self.all_val_closetPoints = []
+    self.all_val_surfaceSamples = []
 
-  # def reloadShapes(self):
-  #   for ix in range(self.batchSize):
-  #     self.startModelIndex = np.random.randint(0, len(self.modelNames))
-  #     shape_dict = self.shape_mats[self.modelNames[self.startModelIndex]]
-  #     # shape_dict = loadmat(self.modelNames[self.startModelIndex])#,
-  #       # {'Volume', 'tsdf', 'surfaceSamples', 'closestPoints'})
-  #     shape = lambda x:0
-  #     shape.tsdf = torch.from_numpy(shape_dict['tsdf']).float()
-  #     shape.Volume = torch.from_numpy(shape_dict['Volume']).float()
-  #     shape.closestPoints = torch.from_numpy(shape_dict['closestPoints']).float()
-  #     shape.surfaceSamples = torch.from_numpy(shape_dict['surfaceSamples']).float()
-  #     shape.vertices = shape_dict['vertices']
-  #     shape.faces = shape_dict['faces']
-  #     self.loadedVoxels[ix][0].copy_(shape.Volume)
-  #     self.loadedTsdfs[ix][0].copy_(shape.tsdf)
-  #     self.loadedCPs[ix][0].copy_(shape.closestPoints)
-  #     self.loadedSurfaceSamples[ix] = shape.surfaceSamples.clone()
-  #   self.loadedShapes = self.loadedVoxels.clone()
+    for model_file, shape in self.val_shape_mats.items():
+      self.all_val_tsdfs.append(torch.from_numpy(shape['tsdf']).float())
+      self.all_val_volumes.append(torch.from_numpy(shape['Volume']).float())
+      self.all_val_closetPoints.append(torch.from_numpy(shape['closestPoints']).float())
+      self.all_val_surfaceSamples.append(torch.from_numpy(shape['surfaceSamples']).float())
+
+    self.all_val_tsdfs = torch.stack(self.all_val_tsdfs).cuda()
+    self.all_val_volumes = torch.stack(self.all_val_volumes).unsqueeze(1).cuda()
+    self.all_val_closetPoints = torch.stack(self.all_val_closetPoints).unsqueeze(1).cuda()
+    self.all_val_surfaceSamples = torch.stack(self.all_val_surfaceSamples).cuda()
 
   def reloadShapes(self):
     ids = []
@@ -176,12 +203,17 @@ class SimpleCadData(object):
     return output
 
   def forwardTest(self):
-    if self.iter % self.modelIter == 0:
-      self.reloadShapes()
-    self.iter  = self.iter + 1
-    outTsfds = self.loadedTsdfs.view(self.batchSize, self.gridSize**3)
-    outPoints = self.gridPoints.clone()
-    return self.loadedShapes, outTsfds, outPoints, self.loadedFileNames, self.loadedSurfaceSamples
+    # if self.iter % self.modelIter == 0:
+    #   self.reloadShapes()
+    # self.iter  = self.iter + 1
+    # outTsfds = self.loadedTsdfs.view(self.batchSize, self.gridSize**3)
+    # outPoints = self.gridPoints.clone()
+    # return self.loadedShapes, outTsfds, outPoints, self.loadedFileNames, self.loadedSurfaceSamples
+    return self.all_val_volumes[:self.batchSizeVis], self.valFileNames[:self.batchSizeVis], self.all_val_surfaceSamples[:self.batchSizeVis]
+
+  def forwardTestResult(self):
+    return self.all_val_volumes, self.valFileNames, self.all_val_surfaceSamples
+
 
   def reloadShapesSequential(self):
     ids = []

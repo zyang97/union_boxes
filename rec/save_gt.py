@@ -7,9 +7,9 @@ params = lambda x: 0
 params.data_dir = 'D:\\data\\images\\data'
 params.num_views = 10
 params.batch_size = 32
-params.category = 'aero'
+params.category = 'bench'
 params.num_points = 1024
-params.save_dir = 'D:\\data\\images\\data\\pcl_gt\\aero'
+params.save_dir = 'D:\\data\\images\\data\\pcl_gt\\lamp'
 
 class OBJ:
   def __init__(self, vertices, lines_index):
@@ -25,8 +25,8 @@ class OBJ:
       for l in self.lines:
         f.write('l {0} {1}\n'.format(int(l[0]), int(l[1])))
 
-train_models, train_pair_indices = get_data_models(params.data_dir, 'aero', params.num_views, 'train')
-val_models, val_pair_indices = get_data_models(params.data_dir, 'aero', params.num_views, 'val')
+# train_models, train_pair_indices = get_data_models(params.data_dir, 'aero', params.num_views, 'train')
+# val_models, val_pair_indices = get_data_models(params.data_dir, 'aero', params.num_views, 'val')
 
 
 def save_pcl_model(data_dir, save_dir, category, split='train'):
@@ -38,7 +38,7 @@ def save_pcl_model(data_dir, save_dir, category, split='train'):
         obj.save_obj(os.path.join(save_dir, split, filename + '.obj'))
 
 if __name__ == '__main__':
-    save_pcl_model(params.data_dir, params.save_dir, params.category, 'test')
+    #save_pcl_model(params.data_dir, params.save_dir, params.category, 'test')
     save_pcl_model(params.data_dir, params.save_dir, params.category, 'train')
     save_pcl_model(params.data_dir, params.save_dir, params.category, 'val')
 

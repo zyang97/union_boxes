@@ -7,6 +7,7 @@ from torch.nn import functional as F
 import pdb
 import torch
 from third_party.chamfer_distance.chamfer_distance import ChamferDistance
+from third_party.PointCloudCodeTemplate.extensions.earth_movers_distance.emd import EarthMoverDistance
 
 
 def cuboid_tsdf(sample_points, shape):
@@ -125,7 +126,11 @@ def get_aux_loss(inter_output, batch_gt):
 
   # return torch.mean(torch.var(feats, dim=1))
 
-
+def emd_loss(predParts, cuboid_sampler, batch_gt):
+  sampled_points, imp_weights = partComposition(predParts, cuboid_sampler)
+  emd = EarthMoverDistance()
+  cost = emd(sampled_points, batch_gt)
+  return cost
 
 def test_tsdf_pred():
   import numpy as np

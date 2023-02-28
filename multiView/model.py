@@ -28,11 +28,12 @@ class MultiViewNetwork(nn.Module):
         self.inter_net = InterNetwork(params)
 
         # loead pretrained part
-        #pretrained_dict = torch.load(params.encoder_pretrain_dir)
-        #model_dict = self.backbone.state_dict()
-        # pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
-        #model_dict.update(pretrained_dict)
-        #self.backbone.load_state_dict(model_dict)
+        if params.model != 'test':
+            pretrained_dict = torch.load(params.encoder_pretrain_dir)
+            model_dict = self.backbone.state_dict()
+            # pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
+            model_dict.update(pretrained_dict)
+            self.backbone.load_state_dict(model_dict)
 
         outChannels = self.outChannels = 256
         layers = []
@@ -59,12 +60,15 @@ class MultiViewNetwork(nn.Module):
         imgs_batch = imgs_batch.transpose(0, 1)
         num_views = imgs_batch.size(0)
         encoding = 0
+        inter_output = 0
         for imgs in imgs_batch:
-            x = self.backbone(imgs)
+            x, pcl = self.backbone(imgs)
             encoding += x
+            inter_output += pcl
 
         encoding /= num_views
-        inter_output = self.inter_net(encoding)
+        inter_output /= num_views
+        #inter_output = self.inter_net(encoding)
 
         for i in range(3):
             encoding = encoding.unsqueeze(-1)

@@ -102,9 +102,14 @@ ENV/
 
 # third_party
 third_party/
+
+# cache
 multiView/runs/
 multiView/results/
 multiView/cachedir/
 rec/cachedir/
 results/
 train_preds/
+voxels/
+cachedir/
+experiments/cadAutoEncCuboids/runs

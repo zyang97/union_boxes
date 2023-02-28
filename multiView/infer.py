@@ -12,7 +12,6 @@ from rec.dataloader import ShapeNetMultiViewDataset
 params = lambda x: 0
 
 # model
-params.model = 'test'
 params.nSamplesChamfer = 150  # number of points we'll sample per part
 params.nz = 3
 params.shapeLrDecay = 0.01
@@ -25,17 +24,17 @@ params.usePretrain = True
 
 # data
 params.data_dir = 'D:\\data\\images\\data'
-params.num_views = 5
+params.num_views = 10
 params.batch_size = 1
 params.num_points = 1024
 
-params.category = 'aero'
-params.name = params.category + '_multi_view_p10_n5'
-params.pretrainNet = params.category + '_multi_view_p10_n10'
+params.category = 'bench'
+params.name = params.category + '_multi_view_1'
+params.pretrainNet = 'bench_multi_view_1'
 params.pretrainIter = 499
 params.pretrainDir = os.path.join('D:\\projects\\experiment\\volumetricPrimitivesPytorch\\multiView\\cachedir\\snapshots')
-
 params.visMeshesDir = os.path.join('D:\\projects\\experiment\\volumetricPrimitivesPytorch\\multiView\\results\\visualization\\tests', params.name)
+params.infer = 'ca85baab8740ffa198cd58ee93c42c40'
 
 if not os.path.exists(params.visMeshesDir):
     os.makedirs(params.visMeshesDir)
@@ -64,6 +63,8 @@ if __name__ == '__main__':
         print('Processed object {}'.format(k))
         netPred.eval()
         batch_ip, batch_gt, batch_name = test_dataloader[b]
+        if batch_name[0] != params.infer:
+            continue
         batch_ip = Variable(torch.tensor(batch_ip, dtype=torch.float32).cuda())
         batch_gt = Variable(torch.tensor(batch_gt, dtype=torch.float32).cuda())
 
@@ -85,7 +86,7 @@ if __name__ == '__main__':
                 pred_b.append(predParams[idx, px, :].clone().data.cpu())
 
             mUtils.saveParts(pred_b,
-                             '{}/pred_{}.obj'.format(params.visMeshesDir, batch_name[idx]))
+                             '{}/pred_{}_{}.obj'.format(params.visMeshesDir, batch_name[idx], k%10))
 
             k += 1
             print('Chamfer mean is {}'.format(chamfer/k))

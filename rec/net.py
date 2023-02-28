@@ -49,9 +49,9 @@ class Encoder(nn.Module):
         x = self.relu(self.bn1(self.fc1(x))) # [bsize, 1024]
         x = self.relu(self.bn2(self.fc2(x))) # [bsize, 512]
         x = self.relu(self.bn3(self.dropout(self.fc3(x)))) # [bsize, 256]
-        # inter_pcl = self.bn4(self.fc4(x))
-        # inter_pcl = inter_pcl.view(32, self.num_points, 3)
-        return x
+        inter_pcl = self.bn4(self.fc4(x))
+        inter_pcl = inter_pcl.view(x.size(0), self.num_points, 3)
+        return x, inter_pcl
 
 if __name__ == '__main__':
     model = Encoder(1024).cuda()

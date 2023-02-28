@@ -14,6 +14,7 @@ from tensorboardX import SummaryWriter
 params = lambda x: 0
 
 # model
+params.model = 'train'
 params.nSamplesChamfer = 150  # number of points we'll sample per part
 params.nz = 3
 params.shapeLrDecay = 0.01
@@ -27,15 +28,15 @@ params.chamferLossWt = 1
 params.data_dir = 'D:\\data\\images\\data'
 params.num_views = 10
 params.batch_size = 32
-params.category = 'chair'
+params.category = 'aero'
 params.num_points = 1024
 
 # trainer
 params.learning_rate = 1e-4
-params.num_train_iter = 1000
+params.num_train_iter = 500
 params.val_iter = 10
-params.name = params.category + '_multi_view_4'
-params.encoder_pretrain_dir = 'D:\\projects\\experiment\\volumetricPrimitivesPytorch\\rec\\cachedir\\snapshots\\' + params.category +'\\iter300.pkl'
+params.name = params.category + '_multi_view_p10_n10'
+params.encoder_pretrain_dir = 'D:\\projects\\experiment\\volumetricPrimitivesPytorch\\rec\\cachedir\\snapshots\\' + params.category + '\\iter150.pkl'
 
 params.visMeshesDir = os.path.join('D:\\projects\\experiment\\volumetricPrimitivesPytorch\\multiView\\cachedir\\visualization\\meshes', params.name)
 params.visPCLDir = os.path.join('D:\\projects\\experiment\\volumetricPrimitivesPytorch\\multiView\\cachedir\\visualization\\inter_pcls', params.name)
