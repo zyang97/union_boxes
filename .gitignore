@@ -104,7 +104,7 @@ ENV/
 cachedir/
 
 # experiments
-experiments/cadAutoEncCuboids/runs
+experiments/cadAutoEncCuboids/runs/
 
 # multiview
 multiView/runs/
@@ -116,7 +116,7 @@ rec/cachedir
 rec/runs
 
 # test
-test
+test/
 
 # third_party
 third_party/
@@ -125,5 +125,5 @@ third_party/
 train_preds/
 
 # voxels
-voxels/results
-voxels/cachedir
+voxels/results/
+voxels/cachedir/
