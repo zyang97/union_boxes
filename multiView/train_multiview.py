@@ -35,7 +35,7 @@ params.num_points = 1024
 params.learning_rate = 1e-4
 params.num_train_iter = 500
 params.val_iter = 10
-params.name = params.category + '_multi_view_p10_n10'
+params.name = params.category + '_multi_view_p10_n10_sep_no_aux'
 params.encoder_pretrain_dir = 'D:\\projects\\experiment\\volumetricPrimitivesPytorch\\rec\\cachedir\\snapshots\\' + params.category + '\\iter150.pkl'
 
 params.visMeshesDir = os.path.join('D:\\projects\\experiment\\volumetricPrimitivesPytorch\\multiView\\cachedir\\visualization\\meshes', params.name)
@@ -61,7 +61,8 @@ def train(netPred, optimizer, batch_ip, batch_gt):
     optimizer.zero_grad()
     aux_loss = get_aux_loss(inter_output, batch_gt)
     loss, coverage, consistency = get_loss(predParts, cuboid_sampler, batch_gt, params.chamferLossWt)
-    loss += aux_loss
+    # comments aux_loss for ablation study
+    #loss += aux_loss
 
     loss.backward()
     optimizer.step()
@@ -114,7 +115,7 @@ if __name__ == '__main__':
             val_aux_loss = get_aux_loss(inter_output, batch_gt)
             val_loss, val_coverage, val_consitency = get_loss(shapePredParams, cuboid_sampler, batch_gt, params.chamferLossWt)
 
-            writer.add_scalar("Loss/val_total_loss", val_loss + val_aux_loss, steps)
+            writer.add_scalar("Loss/val_total_loss", val_loss, steps)
             writer.add_scalar("Loss/val_coverage_loss", val_coverage, steps)
             writer.add_scalar("Loss/val_consitency_loss", val_consitency, steps)
             writer.add_scalar("Loss/val_aux_loss", val_aux_loss, steps)
@@ -123,10 +124,10 @@ if __name__ == '__main__':
             for b in range(0, predParams.size(0)):
 
                 # Save intermediate output point cloud
-                from data.cadConfigsChamfer import OBJ
-                obj = OBJ(inter_output[b], [])
-                obj.save_obj(os.path.join(params.visPCLDir,
-                                          'iter{}_inst{}_pred_{}.obj'.format(iter, b, batch_name[b])))
+                # from data.cadConfigsChamfer import OBJ
+                # obj = OBJ(inter_output[b], [])
+                # obj.save_obj(os.path.join(params.visPCLDir,
+                #                           'iter{}_inst{}_pred_{}.obj'.format(iter, b, batch_name[b])))
 
                 # Save predicted result
                 pred_b = []

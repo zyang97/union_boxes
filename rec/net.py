@@ -30,7 +30,7 @@ class Encoder(nn.Module):
         self.bn2 = nn.BatchNorm1d(512)
         self.bn3 = nn.BatchNorm1d(256)
         self.relu = nn.ReLU()
-        self.dropout = nn.Dropout(p=0.4)
+        #self.dropout = nn.Dropout(p=0.4)
         # self.fc1 = linear_block(2304, 128)
         # self.fc2 = linear_block(128, 128)
         # self.fc3 = linear_block(128, 128)
@@ -48,7 +48,7 @@ class Encoder(nn.Module):
         x = x.reshape(x.size(0), -1) # [32, 256, 3, 3]
         x = self.relu(self.bn1(self.fc1(x))) # [bsize, 1024]
         x = self.relu(self.bn2(self.fc2(x))) # [bsize, 512]
-        x = self.relu(self.bn3(self.dropout(self.fc3(x)))) # [bsize, 256]
+        x = self.relu(self.bn3(self.fc3(x))) # [bsize, 256]
         inter_pcl = self.bn4(self.fc4(x))
         inter_pcl = inter_pcl.view(x.size(0), self.num_points, 3)
         return x, inter_pcl

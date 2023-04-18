@@ -2,7 +2,7 @@ import os
 import json
 
 split = 'val' # {train, val}
-with open('C:\\Users\\zyang\\Downloads\\splits\\{}_models.json'.format(split), 'r') as f:
+with open('D:\\data\\splits\\{}_models.json'.format(split), 'r') as f:
   data = json.load(f)
 
 for category in data.keys():

@@ -20,17 +20,18 @@ params.primTypes = ['Cu']
 params.probLrDecay = 0.0001
 params.gridBound = 0.5
 params.nParts = 10
+params.nSamplesChamfer = 150
 params.chamferLossWt = 1
 params.usePretrain = True
 
 # data
 params.data_dir = 'D:\\data\\images\\data'
-params.num_views = 5
+params.num_views = 1
 params.batch_size = 1
 params.num_points = 1024
 
-params.category = 'aero'
-params.name = params.category + '_multi_view_p10_n5'
+params.category = 'chair'
+params.name = params.category + '_multi_view_p10_n1'
 params.pretrainNet = params.category + '_multi_view_p10_n10'
 params.pretrainIter = 499
 params.pretrainDir = os.path.join('D:\\projects\\experiment\\volumetricPrimitivesPytorch\\multiView\\cachedir\\snapshots')
@@ -90,3 +91,33 @@ if __name__ == '__main__':
             k += 1
             print('Chamfer mean is {}'.format(chamfer/k))
             print('EMD mean is {}'.format(emd / k))
+
+
+def print_all_codes(n, m):
+
+    def print_01_codes(current, num_digits):
+        if num_digits == 0:
+            print(current)
+        else:
+            print_01_codes('0' + current, num_digits - 1)
+            print_01_codes('1' + current, num_digits - 1)
+
+    upper_bound = 0
+    while True:
+        for i in range(upper_bound):
+            print_01_codes('', n)
+        if upper_bound > m:
+            break
+        upper_bound += 1
+    print(upper_bound)
+
+print_all_codes(3,5)
+
+def print_01_codes(current, num_digits):
+    if num_digits == 0:
+        print(current)
+    else:
+        print_01_codes('0' + current, num_digits - 1)
+        print_01_codes('1' + current, num_digits - 1)
+
+print_01_codes("", 4)

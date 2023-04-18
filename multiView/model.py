@@ -60,14 +60,13 @@ class MultiViewNetwork(nn.Module):
         imgs_batch = imgs_batch.transpose(0, 1)
         num_views = imgs_batch.size(0)
         encoding = 0
-        inter_output = 0
+        inter_output = []
         for imgs in imgs_batch:
             x, pcl = self.backbone(imgs)
             encoding += x
-            inter_output += pcl
+            inter_output.append(pcl)
 
         encoding /= num_views
-        inter_output /= num_views
         #inter_output = self.inter_net(encoding)
 
         for i in range(3):

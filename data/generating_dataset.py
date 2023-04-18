@@ -2,14 +2,14 @@ import os
 import shutil
 import cv2
 
-category = '03636649'
+category = '04379243'
 pcl_name = 'pointcloud_1024.npy'
 PNG_SOURCE_FILES = ['00.png', '02.png', '04.png', '06.png', '08.png', '10.png', '12.png', '14.png', '16.png', '18.png']
 PNG_FILES = ['render_0.png', 'render_1.png', 'render_2.png', 'render_3.png', 'render_4.png', 'render_5.png', 'render_6.png', 'render_7.png', 'render_8.png', 'render_9.png']
 
 
-image_dir = os.path.join('C:\\Users\\zyang\\Downloads\\ShapeNetRendering\\ShapeNetRendering', category)
-pcl_dir = os.path.join('C:\\Users\\zyang\\Downloads\\ShapeNet_pointclouds', category)
+image_dir = os.path.join('D:\\data\\ShapeNetRendering\\ShapeNetRendering', category)
+pcl_dir = os.path.join('D:\\data\\ShapeNet_pointclouds', category)
 save_dir = os.path.join('D:\\data\\images\\data', category)
 if not os.path.exists(save_dir):
     os.mkdir(save_dir)

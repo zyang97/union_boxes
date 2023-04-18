@@ -119,9 +119,11 @@ def get_loss(predParts, cuboid_sampler, batch_gt, chamferLossWt):
 
 def get_aux_loss(inter_output, batch_gt):
   chd = ChamferDistance()
-  dist1, dist2, idx1, idx2 = chd(batch_gt, inter_output)
-  loss = (torch.mean(dist1)) + (torch.mean(dist2))
-  loss /= inter_output.size(0)
+  loss = 0
+  for pcls in inter_output:
+    dist1, dist2, idx1, idx2 = chd(batch_gt, pcls)
+    loss += (torch.mean(dist1)) + (torch.mean(dist2))
+  loss /= len(inter_output)
   return loss
 
   # return torch.mean(torch.var(feats, dim=1))

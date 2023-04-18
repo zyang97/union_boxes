@@ -3,22 +3,16 @@ import numpy as np
 import os
 import matplotlib.pyplot as plt
 
-# Chair
-path_aux = 'C:\\Users\\zyang\\Downloads\\Jan28_13-31-50_DESKTOP-DKPHVDU.csv' # aux loss
-path_coverage = 'C:\\Users\\zyang\\Downloads\\Jan28_13-31-50_DESKTOP-DKPHVDU (2).csv'
-path_consistency = 'C:\\Users\\zyang\\Downloads\\Jan28_13-31-50_DESKTOP-DKPHVDU (1).csv'
+path = 'C:\\Users\\Administrator.DESKTOP-DKPHVDU\\Downloads\\Feb25_13-34-54_DESKTOP-DKPHVDUchair_multi_view_p10_n10 (1).csv'
+path_no_aux = 'C:\\Users\\Administrator.DESKTOP-DKPHVDU\\Downloads\\Mar01_02-07-31_DESKTOP-DKPHVDUchair_multi_view_p10_n10_sep_no_aux (1).csv'
 
-# Aero
-# path_aux = 'C:\\Users\\zyang\\Downloads\\Feb13_18-24-14_DESKTOP-DKPHVDU.csv' # aux loss
-# path_coverage = 'C:\\Users\\zyang\\Downloads\\Feb13_18-24-14_DESKTOP-DKPHVDU (2).csv'
-# path_consistency = 'C:\\Users\\zyang\\Downloads\\Feb13_18-24-14_DESKTOP-DKPHVDU (1).csv'
+# path_consistency = 'C:\\Users\\Administrator.DESKTOP-DKPHVDU\\Downloads\\Feb28_00-55-04_DESKTOP-DKPHVDUbench_multi_view_p10_n10_sep (1).csv'
+# path_consistency_no_aux = 'C:\\Users\\Administrator.DESKTOP-DKPHVDU\\Downloads\\Feb28_13-58-13_DESKTOP-DKPHVDUbench_multi_view_p10_n10_sep_no_aux (1).csv'
 
-df_aux = pd.read_csv(path_aux)
-df_coverage = pd.read_csv(path_coverage)
-df_consistency = pd.read_csv(path_consistency)
+df_consistency1 = pd.read_csv(path)
+df_consistency2 = pd.read_csv(path_no_aux)
 
-plt.plot(df_aux['Step'], df_aux['Value'], label= 'aux_loss')
-plt.plot(df_coverage['Step'], df_coverage['Value'], label= 'coverage_loss')
-plt.plot(df_consistency['Step'], df_consistency['Value'], label= 'consistency_loss')
-plt.title('Training Loss: Chair')
+plt.plot(df_consistency1['Step'], df_consistency1['Value'], label= 'consistency_loss')
+plt.plot(df_consistency2['Step'], df_consistency2['Value'], label= 'consistency_loss_no_aux')
+plt.title('Consistency Loss: Chair')
 plt.legend()

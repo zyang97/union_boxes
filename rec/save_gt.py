@@ -7,9 +7,9 @@ params = lambda x: 0
 params.data_dir = 'D:\\data\\images\\data'
 params.num_views = 10
 params.batch_size = 32
-params.category = 'bench'
+params.category = 'table'
 params.num_points = 1024
-params.save_dir = 'D:\\data\\images\\data\\pcl_gt\\lamp'
+params.save_dir = 'D:\\data\\images\\data\\pcl_gt\\table'
 
 class OBJ:
   def __init__(self, vertices, lines_index):

@@ -11,9 +11,9 @@ import cv2
 
 from itertools import product
 
-shapenet_category_to_id = {'chair':'03001627', 'aero':'02691156', 'car':'02958343', 'bench': '02828884', 'lamp': '03636649'}
+shapenet_category_to_id = {'chair':'03001627', 'aero':'02691156', 'car':'02958343', 'bench': '02828884', 'lamp': '03636649', 'table': '04379243'}
 #PNG_FILES = ['render_0.png', 'render_1.png', 'render_2.png', 'render_3.png', 'render_4.png', 'render_5.png', 'render_6.png', 'render_7.png', 'render_8.png', 'render_9.png']
-PNG_FILES = ['render_0.png', 'render_1.png', 'render_2.png', 'render_3.png', 'render_4.png']
+PNG_FILES = ['render_0.png'] #, 'render_1.png', 'render_2.png', 'render_3.png', 'render_4.png']
 
 pcl_filename = 'pointcloud_1024.npy'
 
