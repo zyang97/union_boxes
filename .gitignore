@@ -100,16 +100,30 @@ ENV/
 # mypy
 .mypy_cache/
 
-# third_party
-third_party/
+# cachedir
+cachedir/
 
-# cache
+# experiments
+experiments/cadAutoEncCuboids/runs
+
+# multiview
 multiView/runs/
 multiView/results/
 multiView/cachedir/
-rec/cachedir/
-results/
+
+# rec
+rec/cachedir
+rec/runs
+
+# test
+test
+
+# third_party
+third_party/
+
+# train_preds
 train_preds/
-voxels/
-cachedir/
-experiments/cadAutoEncCuboids/runs
+
+# voxels
+voxels/results
+voxels/cachedir

@@ -2,24 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fc949c0f-0bb6-4388-907a-d376cc5d031e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/multiView/infer_with_mask.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/generating_dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/generating_dataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/process_split.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/process_split.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/visual_loss.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation/visual_loss.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/losses.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/losses.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiView/infer.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiView/infer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiView/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiView/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiView/test_multiview.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiView/test_multiview.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiView/train_multiview.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiView/train_multiview.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rec/dataloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/rec/dataloader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rec/net.py" beforeDir="false" afterPath="$PROJECT_DIR$/rec/net.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rec/save_gt.py" beforeDir="false" afterPath="$PROJECT_DIR$/rec/save_gt.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rec/train_rec.py" beforeDir="false" afterPath="$PROJECT_DIR$/rec/train_rec.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/third_party/Pointnet_Pointnet2_pytorch/models/pointnet_cls.py" beforeDir="false" afterPath="$PROJECT_DIR$/third_party/Pointnet_Pointnet2_pytorch/models/pointnet_cls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/third_party/Pointnet_Pointnet2_pytorch/models/pointnet_part_seg.py" beforeDir="false" afterPath="$PROJECT_DIR$/third_party/Pointnet_Pointnet2_pytorch/models/pointnet_part_seg.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/voxels/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/voxels/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/voxels/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/voxels/train.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
